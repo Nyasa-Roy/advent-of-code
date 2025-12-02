@@ -1,20 +1,36 @@
 with open("inputday1.txt") as f:
     inputs = [line.strip() for line in f.readlines()]
-l = len(inputs)
-s = 50
-curr=s
-out=0
 
-for i in range(l):
-    dir = inputs[i][0]
-    num = int(inputs[i][1:])
-    print(inputs[i])
-    print(dir,num)
-    if(dir=="L"):
-        curr=(curr-num)%100
-    if(dir=="R"):
-        curr=(curr+num)%100
-    print(curr)
-    if(curr==0):
-        out+=1
-print(out)
+curr = 50
+out = 0   
+ans = 0   
+
+for step in inputs:
+    dir = step[0]
+    num = int(step[1:])
+
+    if dir == "L":
+        first = curr if curr != 0 else 100
+        if num >= first:
+            hits = 1 + (num - first) // 100
+        else:
+            hits = 0
+        curr = (curr - num) % 100
+
+    else: 
+        first = (100 - curr) if curr != 0 else 100
+        if num >= first:
+            hits = 1 + (num - first) // 100
+        else:
+            hits = 0
+        curr = (curr + num) % 100
+
+    if curr == 0:
+        out += 1
+        if hits > 0:
+            ans += hits - 1
+    else:
+        ans += hits
+
+print(out)          
+print(ans + out)    
